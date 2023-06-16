@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using FluentAssertions;
 using NUnit.Framework;
 using Tenjin.Data.EntityFramework.ValueConverters;
 
@@ -27,7 +28,7 @@ public class BinaryTimestampConverterTests
         var converter = new BinaryTimestampConverter();
         var bytes = converter.ConvertFromProvider(TestStringValue);
 
-        Assert.AreEqual(TestBytes.ToArray(), bytes);
+        bytes.Should().BeEquivalentTo(TestBytes.ToArray());
     }
 
     [Test]
@@ -36,6 +37,6 @@ public class BinaryTimestampConverterTests
         var converter = new BinaryTimestampConverter();
         var stringValue = converter.ConvertToProvider(TestBytes);
 
-        Assert.AreEqual(TestStringValue, stringValue);
+        stringValue.Should().Be(TestStringValue);
     }
 }

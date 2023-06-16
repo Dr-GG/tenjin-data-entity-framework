@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
 using Tenjin.Data.EntityFramework.Extensions;
@@ -18,7 +19,7 @@ public class DbContextExtensionsTests
 
         await dbContext.AttachAsModified(newPerson);
 
-        Assert.AreEqual(EntityState.Modified, dbContext.Entry(newPerson).State);
+        dbContext.Entry(newPerson).State.Should().Be(EntityState.Modified);
     }
 
     [Test]
@@ -28,12 +29,12 @@ public class DbContextExtensionsTests
         var newPerson = GetDefaultNewEntity();
         var existingPerson = AddDefaultNewEntity(dbContext);
 
-        Assert.AreEqual(EntityState.Unchanged, dbContext.Entry(existingPerson).State);
+        dbContext.Entry(existingPerson).State.Should().Be(EntityState.Unchanged);
 
         await dbContext.AttachAsModified(newPerson, c => c.LastName == newPerson.LastName && c.FirstName == newPerson.FirstName);
 
-        Assert.AreEqual(EntityState.Modified, dbContext.Entry(newPerson).State);
-        Assert.AreEqual(EntityState.Detached, dbContext.Entry(existingPerson).State);
+        dbContext.Entry(newPerson).State.Should().Be(EntityState.Modified);
+        dbContext.Entry(existingPerson).State.Should().Be(EntityState.Detached);
     }
 
     [Test]
@@ -43,12 +44,12 @@ public class DbContextExtensionsTests
         var newPerson = GetDefaultNewEntity();
         var existingPerson = AddDefaultNewEntity(dbContext);
 
-        Assert.AreEqual(EntityState.Unchanged, dbContext.Entry(existingPerson).State);
+        dbContext.Entry(existingPerson).State.Should().Be(EntityState.Unchanged);
 
         await dbContext.AttachAsModified(newPerson, c => c.LastName == newPerson.FirstName && c.FirstName == newPerson.LastName);
 
-        Assert.AreEqual(EntityState.Modified, dbContext.Entry(newPerson).State);
-        Assert.AreEqual(EntityState.Unchanged, dbContext.Entry(existingPerson).State);
+        dbContext.Entry(newPerson).State.Should().Be(EntityState.Modified);
+        dbContext.Entry(existingPerson).State.Should().Be(EntityState.Unchanged);
     }
 
     private static ComplexPersonModel GetDefaultNewEntity()
