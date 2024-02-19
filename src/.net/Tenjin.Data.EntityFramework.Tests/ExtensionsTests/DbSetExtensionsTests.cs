@@ -39,7 +39,7 @@ public class DbSetExtensionsTests
     {
         var mockDbSet = new Mock<DbSet<object>>();
         var dbSet = mockDbSet.Object;
-        IEnumerable<object> toRemoveObjects = new []
+        IEnumerable<object> toRemoveObjects = new[]
         {
             new object(),
             new object(),

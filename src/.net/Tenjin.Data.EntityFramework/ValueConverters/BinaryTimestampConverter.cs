@@ -12,8 +12,7 @@ public class BinaryTimestampConverter : ValueConverter<byte[], string>
     /// </summary>
     public BinaryTimestampConverter() : base(
         v => ToDatabase(v),
-        v => FromDatabase(v))
-    { }
+        v => FromDatabase(v)) { }
 
     private static byte[] FromDatabase(string value) =>
         value.Select(c => (byte)c).ToArray();

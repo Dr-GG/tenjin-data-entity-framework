@@ -31,7 +31,10 @@ public class DbContextExtensionsTests
 
         dbContext.Entry(existingPerson).State.Should().Be(EntityState.Unchanged);
 
-        await dbContext.AttachAsModified(newPerson, c => c.LastName == newPerson.LastName && c.FirstName == newPerson.FirstName);
+        await dbContext.AttachAsModified(newPerson, c =>
+            c.Id == existingPerson.Id &&
+            c.LastName == existingPerson.LastName &&
+            c.FirstName == existingPerson.FirstName);
 
         dbContext.Entry(newPerson).State.Should().Be(EntityState.Modified);
         dbContext.Entry(existingPerson).State.Should().Be(EntityState.Detached);
@@ -46,7 +49,10 @@ public class DbContextExtensionsTests
 
         dbContext.Entry(existingPerson).State.Should().Be(EntityState.Unchanged);
 
-        await dbContext.AttachAsModified(newPerson, c => c.LastName == newPerson.FirstName && c.FirstName == newPerson.LastName);
+        await dbContext.AttachAsModified(newPerson, c =>
+            c.Id == newPerson.Id &&
+            c.LastName == newPerson.FirstName &&
+            c.FirstName == newPerson.LastName);
 
         dbContext.Entry(newPerson).State.Should().Be(EntityState.Modified);
         dbContext.Entry(existingPerson).State.Should().Be(EntityState.Unchanged);
@@ -59,7 +65,6 @@ public class DbContextExtensionsTests
             FirstName = "Developer",
             LastName = "X"
         };
-
     }
 
     private static ComplexPersonModel AddDefaultNewEntity(InMemoryDbContext dbContext)
